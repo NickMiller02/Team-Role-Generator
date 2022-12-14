@@ -12,6 +12,7 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Employee = require('./lib/Employee');
+const generateTeam = require('./lib/template.js');
 
 //Array for team
 teamArr = [];
@@ -19,7 +20,7 @@ teamArr = [];
 function runApp() {
     //Create the team function
     function createTeam() {
-        inquirer.createPromptModule([{
+        inquirer.prompt([{
             type: "list",
             name: "employeePrompt",
             message: "Which type of employye would you like to add to your roster?",
@@ -122,12 +123,15 @@ function runApp() {
                     message: "At which school does the intern attend?"
                 },
             ]).then(response => {
-                const intern = new Engineer(response.internName, response.internId, response.internEmail, response.internSchool);
+                const intern = new Intern(response.internName, response.internId, response.internEmail, response.internSchool);
                 teamArr.push(intern);
                 createTeam();
             });
         }
     }
+
+    //Calls the Create team function
+    createTeam();
 }
 //Create the HTML
 function createHTML() {
@@ -135,4 +139,5 @@ function createHTML() {
     fs.writeFileSync(outputPath, generateTeam(teamArr), "utf-8")
 }
 
+//runs the inquirer and team roster
 runApp();
